@@ -1,0 +1,7 @@
+3
+FOOD
+MONEY
+A
+ABCDEFG
+Z
+A
