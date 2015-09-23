@@ -1,0 +1,18 @@
+8 7
+wwlwlww
+wwlllww
+wwwwwww
+wwllwww
+wwwwwww
+wwwwwww
+llwllll
+wwwwwww
+1 3
+
+5 5
+wwlwl
+wwlll
+wwwww
+wwllw
+wwwww
+1 3
