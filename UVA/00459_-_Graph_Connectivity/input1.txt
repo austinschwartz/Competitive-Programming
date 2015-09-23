@@ -1,0 +1,12 @@
+2
+
+E
+AB
+CE
+DB
+EC
+
+D
+AB
+BC
+AD
