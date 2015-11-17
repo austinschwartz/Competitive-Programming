@@ -1,0 +1,9 @@
+6 
+Y U A Z 0 
+Y U C A 0 
+Y U A Y 0 
+M U D Z 0 
+M B C D 0 
+M B C Y 0 
+A D
+0
