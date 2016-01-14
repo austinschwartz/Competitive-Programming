@@ -1,28 +1,79 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-class Main {
-  public static void main(String[] args) throws Exception {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    int t = Integer.parseInt(br.readLine().trim());
-    for (int i = 0; i < t; i++) {
-      Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
-      int n = Integer.parseInt(br.readLine().trim());
+public class Main {
+  public static PrintWriter out;
+  public static void main(String[] args) {
+    MyScanner sc = new MyScanner();
+    out = new PrintWriter(new BufferedOutputStream(System.out));
+    int t = sc.nextInt();
+    for (int x = 0; x < t; x++) {
+      int n = sc.nextInt();
+      Map<Integer, Integer> map = new HashMap<Integer, Integer>();
       int max = 0;
       int current = 0;
-      for (int j = 0; j < n; j++) {
-        int x = Integer.parseInt(br.readLine().trim());
-        if (map.containsKey(x)) {
-          current -= map.get(x);
-          map = new TreeMap<Integer, Integer>();
-          map.put(x, current);
+      int prev = 0;
+      for (int i = 0; i < n; i++) {
+        int s = sc.nextInt();
+        current++;
+        if (map.containsKey(s)) {
+          current = prev;
+          map.put(s, current);
         } else {
-          map.put(x, current);
-          current++;
+          map.put(s, current);
         }
-        max = Math.max(max, current);
+        max = Math.max(max, current - );
+        prev = current;
       }
       System.out.println(max);
+    }
+    out.close();
+  }
+
+
+  public static class MyScanner {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public MyScanner() {
+       br = new BufferedReader(new InputStreamReader(System.in));
+    }
+ 
+    public String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      return st.nextToken();
+    }
+ 
+    public int nextInt() {
+      return Integer.parseInt(next());
+    }
+ 
+    public long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    public double nextDouble() {
+      return Double.parseDouble(next());
+    }
+
+    public char nextChar() {
+      return next().charAt(0);
+    }
+
+    public String nextLine() {
+      String str = "";
+      try {
+         str = br.readLine();
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return str;
     }
   }
 }
