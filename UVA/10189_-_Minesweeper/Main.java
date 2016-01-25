@@ -21,14 +21,14 @@ class Main {
       for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
           if (board[i][j] == '*') {
-            if (j+1 < m) board2[i][j+1]++;
+            if (j+1 < m)  board2[i][j+1]++;
             if (j-1 >= 0) board2[i][j-1]++;
-            if (i+1 < n) board2[i+1][j]++;
+            if (i+1 < n)  board2[i+1][j]++;
             if (i-1 >= 0) board2[i-1][j]++;
             if (i-1 >= 0 && j-1 >= 0) board2[i-1][j-1]++;
-            if (i-1 >= 0 && j+1 < m) board2[i-1][j+1]++;
-            if (i+1 < n && j-1 >= 0) board2[i+1][j-1]++;
-            if (i+1 < n && j+1 < m) board2[i+1][j+1]++;
+            if (i-1 >= 0 && j+1 < m)  board2[i-1][j+1]++;
+            if (i+1 < n && j-1 >= 0)  board2[i+1][j-1]++;
+            if (i+1 < n && j+1 < m)   board2[i+1][j+1]++;
           }
         }
       }
@@ -37,7 +37,7 @@ class Main {
           if (board[i][j] == '.')
             System.out.print(board2[i][j]);
           else
-            System.out.print(board[i][j]);
+            System.out.print('*');
         }
         System.out.println();
       }
