@@ -41,15 +41,15 @@ public class Main {
         }
       }
       List<Integer> longestSubset = null;
-      int length = 0;
+      int longestLength = 0;
       for (List<Integer> subset : trackSubsets) {
         int total = 0;
         for (int i : subset)
           total += i;
         if (total != bestTotal)
           continue;
-        if (subset.size() > length) {
-          length = subset.size();
+        if (subset.size() > longestLength) {
+          longestLength = subset.size();
           longestSubset = subset;
         }
       }
