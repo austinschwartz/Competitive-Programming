@@ -3,67 +3,75 @@ import java.util.*;
 
 public class Main {
   public static PrintWriter out;
-  public static Mark[][] grid;
-  public static int R, C, M, N;
-  public enum Mark { UNMARKED, VISITING, WATER, EVEN, ODD };
+  public static boolean[][] water;
+  public static boolean[][] visited;
+  public static int R, C, M, N, even, odd;
 
   public static boolean reachable(int r, int c) {
-    if (r < 0 || r >= R || c < 0 || c >= C || grid[r][c] != Mark.UNMARKED)
+    if (r < 0 || r >= R || c < 0 || c >= C || water[r][c])
       return false;
     return true;
   }
 
-  public static int dfs(int r, int c) {
-    if (!reachable(r, c)) return 0;
-    grid[r][c] = Mark.VISITING;
+  public static void dfs(int a, int b) {
     int count = 0;
-    if (reachable(r - M, c - N)) count++;
-    if (reachable(r + M, c + N)) count++;
-    if (reachable(r - M, c + N)) count++;
-    if (reachable(r + M, c - N)) count++;
+    int[][] coords;
+    
+    if (M == 0)
+      coords = new int[][]{ {0, N}, {0, -N}, {N, 0}, {-N, 0} };
+    else if (N == 0)
+      coords = new int[][]{ {0, M}, {0, -M}, {M, 0}, {-M, 0} };
+    else if (M == N)
+      coords = new int[][]{ {M, N}, {M, -N}, {-M, N}, {-M, -N} };
+    else
+      coords = new int[][]{ {M, N}, {M, -N}, {-M, N}, {-M, -N}, 
+                            {N, M}, {N, -M}, {-N, M}, {-N, -M} };
+    
+    for (int[] coord : coords) {
+      int c = a + coord[0];
+      int d = b + coord[1];
+      if (reachable(c, d)) {
+        count++;
+        if (!visited[c][d]) {
+          visited[c][d] = true;
+          dfs(c, d);
+        }
+      }
+    }
 
-    if (reachable(r - N, c - M)) count++;
-    if (reachable(r + N, c + M)) count++;
-    if (reachable(r - N, c + M)) count++;
-    if (reachable(r + N, c - M)) count++;
-    grid[r][c] = Mark.UNMARKED;
-    return count;
+    if (count % 2 == 0)
+      even++;
+    else
+      odd++;
   }
 
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
     int T = sc.nextInt();
-    for (int i = 0; i < T; i++) {
+
+    for (int t = 1; t <= T; t++) {
       R = sc.nextInt();
       C = sc.nextInt();
-      grid = new Mark[R][C];
-      for (int j = 0; j < R; j++)
-        Arrays.fill(grid[j], Mark.UNMARKED);
+      water = new boolean[R][C];
+      visited = new boolean[R][C];
+      visited[0][0] = true;
+
       M = sc.nextInt();
       N = sc.nextInt();
       int W = sc.nextInt();
       for (int j = 0; j < W; j++) {
         int x = sc.nextInt();
         int y = sc.nextInt();
-        grid[x][y] = Mark.WATER;
+        water[x][y] = true;
       }
+      
+      even = 0;
+      odd = 0;
 
-      int even = 0;
-      int odd = 0;
-      for (int r = 0; r < R; r++) {
-        for (int c = 0; c < C; c++) {
-          if (grid[r][c] == Mark.UNMARKED) {
-            int deeeffss = dfs(r, c);
-            if (deeeffss % 2 != 0)
-              odd++;
-            else
-              even++;
-          }
-        }
-      }
+      dfs(0, 0);
 
-      System.out.println("Case " + (i + 1) + ": " + even + " " + odd);
+      System.out.printf("Case %d: %d %d\n", t, even, odd);
     }
     out.close();
   }
