@@ -1,47 +1,107 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-class Main {
-  public static int[][] memo;
-  public static int M, C;
-  public static int[][] price;
-  
-  public static int shop(int money, int g) {
-    if (money < 0) return -999999;
-    if (g == C) return M - money;
-    if (memo[money][g] != -1) return memo[money][g];
-    int ans = -1;
-    for (int model = 1; model <= price[g][0]; model++) {
-      ans = Math.max(ans, shop(money - price[g][model], g + 1));
+public class Main {
+  public static PrintWriter out;
+  public static int N, M, C;
+  public static ArrayList<Integer>[] garments;
+  public static int[][] dp;
+  public static void main(String[] args) {
+    MyScanner sc = new MyScanner();
+    out = new PrintWriter(new BufferedOutputStream(System.out));
+    int N = sc.nextInt();
+    for (int i = 1; i <= N; i++) {
+      M = sc.nextInt();
+      C = sc.nextInt();
+      dp = new int[201][21];
+      for (int j = 0; j < 201; j++)
+        Arrays.fill(dp[j], -1);
+      garments = (ArrayList<Integer>[])new ArrayList[C];
+      for (int j = 0; j < C; j++) {
+        ArrayList<Integer> lst = new ArrayList<Integer>();
+        int G = sc.nextInt();
+        for (int k = 0; k < G; k++) {
+          lst.add(sc.nextInt());
+        }
+        garments[j] = lst;
+      }
+      int ret = shop(M, 0);
+      if (ret == 0)
+        out.println("no solution");
+      else
+        out.println(ret);
     }
-    memo[money][g] = ans;
-    return memo[money][g];
+    out.close();
   }
 
-  public static void main(String[] args) throws Exception {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    int N = Integer.parseInt(br.readLine());
-    for (int k = 0; k < N; k++) {
-      price = new int[25][25];
-      memo = new int[210][25];
-      String[] line = br.readLine().split(" ");
-      M = Integer.parseInt(line[0]); // money
-      C = Integer.parseInt(line[1]); // # of garments
-      for (int i = 0; i < C; i++) {
-        String[] garmentList = br.readLine().split(" ");
-        int K = Integer.parseInt(garmentList[0]);
-        price[i][0] = K;
-        for (int j = 1; j <= K; j++) {
-          price[i][j] = Integer.parseInt(garmentList[j]);
+  public static int shop(int m, int g) {
+    if (m < 0)
+      return Integer.MIN_VALUE;
+    if (g == C)
+      return M - m;
+    if (dp[m][g] == -1) {
+      int ans = 0;
+      for (int i = 0; i < garments[g].size(); i++) {
+        ans = Math.max(ans, shop(m - garments[g].get(i), g + 1));
+      }
+      dp[m][g] = ans;
+    }
+    return dp[m][g];
+  }
+
+
+  public static class MyScanner {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public MyScanner() {
+       br = new BufferedReader(new InputStreamReader(System.in));
+    }
+ 
+    public boolean hasNext() {
+      try {
+        boolean a = br.ready();
+        return a;
+      } catch (IOException e) {
+        return false;
+      }
+    }
+
+    public String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
         }
       }
-      for (int i = 0; i < 210; i++)
-        Arrays.fill(memo[i], -1);
-      int score = shop(M, 0);
-      if (score < 0)
-        System.out.println("no solution");
-      else
-        System.out.println(score);
+      return st.nextToken();
+    }
+ 
+    public int nextInt() {
+      return Integer.parseInt(next());
+    }
+ 
+    public long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    public double nextDouble() {
+      return Double.parseDouble(next());
+    }
+
+    public char nextChar() {
+      return next().charAt(0);
+    }
+
+    public String nextLine() {
+      String str = "";
+      try {
+         str = br.readLine();
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return str;
     }
   }
 }
