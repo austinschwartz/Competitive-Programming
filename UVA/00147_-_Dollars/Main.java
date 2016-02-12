@@ -4,37 +4,42 @@ import java.io.*;
 class Main {
 
   
-  static long[][] memo;
-  static int[] types = {2000, 1000, 400, 200, 100, 40, 20, 10, 4, 2, 1};
+  static long[][] dp;
+  static int[] coins = {10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
   
-  static long solve(int type, int V) {
-    if (V < 0)
+  static long solve(int i, int v) {
+    if (v < 0)
       return 0;
-    if (memo[type][V] != -1)
-      return memo[type][V];
-    if (V == 0)
-      return memo[type][V] = 1;
-    if (type == types.length)
-      return memo[type][V] = 0;
+
+    if (dp[i][v] != -1)
+      return dp[i][v];
+
+    if (v == 0)
+      return dp[i][v] = 1;
+
+    if (i == coins.length)
+      return dp[i][v] = 0;
     
-    return memo[type][V] = solve(type + 1, V) + solve(type, V - types[type]);
+    return dp[i][v] = solve(i + 1, v) + solve(i, v - coins[i]);
   }
   
   public static void main(String[] args) throws IOException {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     
-    int MAXN = types.length;
-    int MAXV = 6000;
+    int MAXN = coins.length;
+    int MAXV = 60000;
     
-    memo = new long[MAXN + 1][MAXV + 1];
+    dp = new long[MAXN + 1][MAXV + 1];
     for (int i = 0; i <= MAXN; ++i)
-      Arrays.fill(memo[i], -1);
+      Arrays.fill(dp[i], -1);
     
     while (true) {
-      int V = (int)(Double.parseDouble(in.readLine()) * 20);
+      double  dV = Double.parseDouble(in.readLine());
+      dV *= 100;
+      int V = (int)Math.round(dV);
       if (V == 0)
         break;
-      System.out.printf(Locale.ENGLISH, "%6.2f%17d\n", (double)(V / 20.0), solve(0, V));
+      System.out.printf("%6.2f%17d\n", ((double)V / 100), solve(0, V));
     }
     
     in.close();
