@@ -1,0 +1,112 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+  public static PrintWriter out;
+  public static int n, s, t, m;
+  public static ArrayList<Integer>[] adjList;
+  public static void main(String[] args) {
+    MyScanner sc = new MyScanner();
+    out = new PrintWriter(new BufferedOutputStream(System.out));
+    int T = 1;
+    while (true) {
+      n = sc.nextInt(); // # of vertices
+      if (n == 0)
+        break;
+      s = sc.nextInt(); // source
+      t = sc.nextInt(); // sink
+      m = sc.nextInt(); // # of edges
+      for (int i = 0; i < c; i++) {
+        int u = sc.nextInt();
+        int v = sc.nextInt();
+        int b = sc.nextInt(); // capacity
+      }
+      
+      int mf = 0;
+      while (true) {
+        int f = 0;
+
+        Queue<Integer> q = new LinkedList<Integer>();
+        ArrayList<Integer> dist = new ArrayList<Integer>();
+        dist.addAll(Collections.nCopies(V, INF));
+        q.offer(s);
+        dist.set(s, 0);
+        p.clear();
+        p.addAll(Collections.nCopies(V, -1));
+        while (!q.isEmpty()) {
+          int u = q.poll();
+          if (u == t) break; // immediately stop BFS if we already reach sink t
+          for (int v = 0; v < MAX_V; v++) // note: enumerating neighbors with AdjMatrix is `slow'
+            if (res[u][v] > 0 && dist.get(v) == INF) { // res[u][v] can change!
+              dist.set(v, dist.get(u) + 1);
+              q.offer(v);
+              p.set(v, u); // parent of vertex v is vertex u
+            }
+        }
+        
+        augment(t, INF); // find the min edge weight `f' along this path, if any
+        if (f == 0) break; // if we cannot send any more flow (`f' = 0), terminate the loop
+
+
+      out.printf("Network %d\n", T++);
+      out.println("The bandwidth is " + x);
+    }
+    out.close();
+  }
+  public static int INF = (int)1e8;
+
+  public static class MyScanner {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public MyScanner() {
+       br = new BufferedReader(new InputStreamReader(System.in));
+    }
+ 
+    public boolean hasNext() {
+      try {
+        boolean a = br.ready();
+        return a;
+      } catch (IOException e) {
+        return false;
+      }
+    }
+
+    public String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      return st.nextToken();
+    }
+ 
+    public int nextInt() {
+      return Integer.parseInt(next());
+    }
+ 
+    public long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    public double nextDouble() {
+      return Double.parseDouble(next());
+    }
+
+    public char nextChar() {
+      return next().charAt(0);
+    }
+
+    public String nextLine() {
+      String str = "";
+      try {
+         str = br.readLine();
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return str;
+    }
+  }
+}

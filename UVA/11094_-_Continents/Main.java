@@ -5,8 +5,6 @@ class Main {
   public static int[][] matrix;
   public static int M;
   public static int N;
-  //public static int[] dr = new int[] {-1, -1, 0, 1, 1, 1, 0, 1};
-  //public static int[] dc = new int[] {0, 1, 1, 1, 0, -1, -1, -1};
   public static int[] dr = new int[] {-1, 0, 1, 0};
   public static int[] dc = new int[] {0, 1, 0, -1};
   public static int islands;
@@ -14,14 +12,13 @@ class Main {
   public static int biggestIsland;
 
   public static void printMatrix() {
-    for (int i = 0; i < M; i++) {
+    for (int i = 0; i < M; i++)
       System.out.println(Arrays.toString(matrix[i]));
-    }
   }
 
   public static void dfs(int row, int col) {
     if (col == -1)  col = N - 1;
-    if (col == N)   col = 0;
+    if (col ==  N)  col = 0;
     if (row >= M || row < 0 || 
         col >= N || col < 0 ||
         matrix[row][col] == 0)
@@ -29,6 +26,7 @@ class Main {
     if (islands > -1)
       currentIsland = currentIsland + 1;
     matrix[row][col] = 0;
+
     for (int i = 0; i < 4; i++)
       dfs(row + dr[i], col + dc[i]);
     return;
@@ -60,15 +58,12 @@ class Main {
         br.readLine();
         continue;
       }
-      char landChar = charmatrix[x][y];
-      //System.out.println(landChar);
 
-      for (int i = 0; i < M; i++) {
-        for (int j = 0; j < N; j++) { 
-          char cell = charmatrix[i][j];
-          matrix[i][j] = (cell == landChar ? 1 : 0);
-        }
-      }
+      char landChar = charmatrix[x][y];
+
+      for (int i = 0; i < M; i++)
+        for (int j = 0; j < N; j++)
+          matrix[i][j] = (charmatrix[i][j] == landChar ? 1 : 0);
 
       // Need to remove the kings island from consideration
       dfs(x, y);

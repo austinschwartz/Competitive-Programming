@@ -2,29 +2,32 @@ import java.util.*;
 import java.io.*;
 
 class Main {
-  public static class Cell {
-    public int weight;
-    public int prev;
-  }
   public static int m, n;
   public static int[][] matrix;
-  public static Cell[][] paths;
-  public static int paths(int row, int col) {
-    if (row == -1) row = m - 1;
-    else if (row == m) row = 0;
+  public static int[][] paths;
+  public static int[][] parents;
+  public static int p(int row, int col) {
+    if (row == -1) 
+      row = m - 1;
+    else if (row == m) 
+      row = 0;
+
     if (row < 0 || row >= m ||
         col < 0 || col >= n)
-      return -1;
-    if (paths[row][col] != 0)
+      return 999999;
+
+    if (paths[row][col] != 999999)
       return paths[row][col];
-    int nw = paths(row-1, col-1);
-    int w = paths(row, col-1);
-    int sw = paths(row+1, col-1);
+
+    int nw = p(row - 1, col - 1);
+    int w  = p(row,     col - 1);
+    int sw = p(row + 1, col - 1);
+
     if (nw <= w && nw <= sw) {
       paths[row][col] = nw + matrix[row][col];
       parents[row][col] = (row-1 == -1 ? m-1 : (row-1 == m ? 0 : row-1));
     } else if (w <= nw && w <= sw) {
-      paths[row][col] = w + matrix[row][col];
+      paths[row][col]   = w + matrix[row][col];
       parents[row][col] = row;
     } else {
       paths[row][col] = sw + matrix[row][col];
@@ -32,44 +35,56 @@ class Main {
     }
     return paths[row][col];
   }
+
   public static void main(String[] args) throws Exception {
     Scanner sc = new Scanner(System.in);
     while (sc.hasNextInt()) {
       m = sc.nextInt();
       n = sc.nextInt();
-      matrix = new int[m][n];
-      paths = new int[m][n];
+      matrix  = new int[m][n];
+      paths   = new int[m][n];
       parents = new int[m][n];
 
-      // Get input
-      for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
+      for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
           matrix[i][j] = sc.nextInt();
-          paths[i][j] = new Cell();
-        }
-      }
 
-      // Calculate DP table
-      for (int row = 0; row < m; row++) {
-        paths[row][0].weight = matrix[row][0];
-        paths[row][0].prev = -1;
-      }
+      for (int i = 0; i < m; i++)
+        Arrays.fill(paths[i], 999999);
 
-      for (int row = 0; row < m; row++)
-        for (int col = 1; col < n; col++)
-          paths(row, col);
+      for (int i = 0; i < m; i++)
+        paths[i][0] = matrix[i][0];
+
+      for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+          p(i, j);
       
-      // Calculate min
       int min = Integer.MAX_VALUE;
       int min_row = -1;
-      for (int row = 0; row < m; row++) {
-        if (paths[row][n-1] < min) {
-          min = paths[row][n-1];
-          min_row = row;
+
+      for (int i = 0; i < m; i++) {
+        if (paths[i][n-1] < min) {
+          min = paths[i][n-1];
+          min_row = i;
         }
       }
-      for (int row = 0; row < m; row++)
-        System.out.println(Arrays.toString(path[row]));
+
+      for (int i = 0; i < m; i++) {
+        if (paths[i][n-1] == min && i <= min_row) {
+          min_row = i;
+        }
+      }
+
+      int i = n - 1;
+      List<Integer> ret = new ArrayList<Integer>();
+      ret.add(min_row + 1);
+      while (i > 0) {
+        ret.add(parents[min_row][i] + 1);
+        min_row = parents[min_row][i];
+        i--;
+      }
+      Collections.reverse(ret);
+      System.out.println(ret);
       System.out.println(min);
     }
   }

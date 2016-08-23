@@ -1,0 +1,96 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+  public static PrintWriter out;
+  public static int N, M;
+  public static int[] S, dp;
+  public static int maxMask;
+  public static void main(String[] args) {
+    MyScanner sc = new MyScanner();
+    out = new PrintWriter(new BufferedOutputStream(System.out));
+    N = sc.nextInt();
+    for (int i = 0; i < N; i++) {
+      M = sc.nextInt();
+      maxMask = (1 << M) - 1;
+
+      int sum = 0;
+      for (int j = 0; j < M; j++) {
+        S[j] = sc.nextInt();
+        sum += S[j];
+      }
+
+      int v = sum / 4;
+
+      if ((v * 4) != sum || !f(0))
+        out.println("no");
+      else
+        out.println("yes");
+
+    }
+    out.close();
+  }
+
+  public static boolean f(int mask) {
+    if (mask == maxMask)
+      return true;
+
+    
+  }
+
+
+  public static class MyScanner {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public MyScanner() {
+       br = new BufferedReader(new InputStreamReader(System.in));
+    }
+ 
+    public boolean hasNext() {
+      try {
+        boolean a = br.ready();
+        return a;
+      } catch (IOException e) {
+        return false;
+      }
+    }
+
+    public String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      return st.nextToken();
+    }
+ 
+    public int nextInt() {
+      return Integer.parseInt(next());
+    }
+ 
+    public long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    public double nextDouble() {
+      return Double.parseDouble(next());
+    }
+
+    public char nextChar() {
+      return next().charAt(0);
+    }
+
+    public String nextLine() {
+      String str = "";
+      try {
+         str = br.readLine();
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return str;
+    }
+  }
+}

@@ -1,0 +1,4 @@
+3 250 250
+gala 500 20 4
+goldendelicious 450 1 25
+green 380 13 4

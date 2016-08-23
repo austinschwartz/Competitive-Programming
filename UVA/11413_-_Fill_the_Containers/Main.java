@@ -34,17 +34,19 @@ public class Main {
         nums[i] = sc.nextInt(); // container capacity
 
       int low = 0, high = Integer.MAX_VALUE;
-
-      while (high > low) {
+      int ans = 0;
+      int i = 0;
+      while (Math.abs(high - low) > 0 && i < 50) {
         int mid = low + (high - low)/2;
-        if (f(high)) {
+        if (f(mid)) {
+          ans = mid;
           high = mid;
         } else {
-          low = high;
-          high = high + high / 2;
+          low = mid;
         }
+        i++;
       }
-      out.println((high + 1));
+      out.println(ans);
 
       
     }
