@@ -3,76 +3,75 @@ import java.util.*;
 
 public class Main {
   public static PrintWriter out;
-  public static int[][] b;
-  public static int[] sums;
-  public static BitSet[] bs;
-  public static int n, m, q, tot=0;
+  public static long[][] b;
+  public static long[] sums;
+  public static BitSet bs;
+  public static int n, m, q;
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
     n = sc.nextInt(); // shelves
     m = sc.nextInt(); // positions
     q = sc.nextInt();
-    b = new int[q + 1][n + 1];
-    sums = new int[q + 1];
-    bs = new BitSet[100001];
-    BitSet ones = new BitSet(m);
-    ones.flip(0, m);
-    sums[0] = 0;
-    bs[0] = new BitSet();
+    bs = new BitSet(q + 1);
+    b = new long[q + 1][n + 1];
+    sums = new long[q + 1];
+    b[0][0] = 0L;
     for (int r = 1; r <= q; r++) {
-      int i = 0, j = 0, k = 0;
       int op = sc.nextInt();
       if (op == 4) {
-        k = sc.nextInt();
-        for (i = 0; i < n; i++)
-          b[r][i] = b[k][i];
-        sums[r] = sums[k];
+        int k = sc.nextInt();
+        for (int i = 1; i <= n; i++) 
+          b[r][j] = b[k][i];
       } else {
-        for (i = 0; i < n; i++) {
+        int i = 0, j = 0;
+        for (i = 1; i <= n; i++)
           b[r][i] = b[r-1][i];
-          sums[r] = sums[r-1];
-        }
         switch (op) {
           case 1:
             i = sc.nextInt() - 1;
             j = sc.nextInt() - 1;
-            if (!bs[b[r][i]].get(j)) {
-              sums[r]++;
-              bs[++tot] = (BitSet)bs[b[r][i]].clone();
-              b[r][i] = tot;
-              bs[b[r][i]].set(j);
-            }
             break;
           case 2:
             i = sc.nextInt() - 1;
             j = sc.nextInt() - 1;
-            if (bs[b[r][i]].get(j)) {
-              sums[r]--;
-              bs[++tot] = (BitSet)bs[b[r][i]].clone();
-              b[r][i] = tot;
-              bs[b[r][i]].clear(j);
-            }
             break;
           case 3:
             i = sc.nextInt() - 1;
-            int x = bs[b[r][i]].cardinality();
-            bs[++tot] = (BitSet)bs[b[r][i]].clone();
-            b[r][i] = tot;
-            bs[b[r][i]].xor(ones);
-            int ret = 0;
-            //for (i = 0; i < n; i++)
-              //ret += bs[b[r][i]].cardinality();
-              //
-            sums[r] = sums[r] - x - x + m;
-
             break;
         }
       }
-      out.println(sums[r]);
+      out.println(h(b[r]));
     }
     out.close();
   }
+
+  public static int h(long[][] nums) {
+    int ret = 0;
+    for (int i = 0; i < n; i++)
+    for (int j = 0; j < max; j++)
+      ret += h(nums[i][j]);
+    return ret;
+  }
+
+  public static int h(long n) {
+    //int num = 0;
+    //while (n != 0) {
+      //n = n & (n-1);
+      //num++;
+    //}
+    //return Long.bitCount(n);
+     long b = n;
+     b = (b & 0x5555555555555555L) + (b >> 1 & 0x5555555555555555L);
+     b = (b & 0x3333333333333333L) + (b >> 2 & 0x3333333333333333L);
+     b = b + (b >> 4) & 0x0F0F0F0F0F0F0F0FL;
+     b = b + (b >> 8);
+     b = b + (b >> 16);
+     b = b + (b >> 32) & 0x0000007F;
+
+     return (int) b;
+  }
+
 
   public static class MyScanner {
     BufferedReader br;
