@@ -18,7 +18,7 @@ class Main {
     queue.add(new WordNode(start, 1));
     
     while (!queue.isEmpty()) {
-      WordNode top = queue.remove();
+      WordNode top = queue.poll();
       String word = top.word;
 
       if (word.equals(end))
@@ -33,14 +33,13 @@ class Main {
           }
           String newWord = new String(arr);
           if (words.contains(newWord)) {
-            queue.add(new WordNode(newWord, top.steps + 1));
+            queue.offer(new WordNode(newWord, top.steps + 1));
             words.remove(newWord);
           }
           arr[i] = temp;
         }
       }
     }
-
     return 0;
   }
 
@@ -60,7 +59,7 @@ class Main {
         String[] splitString = temp.split(" ");
         String start = splitString[0];
         String end = splitString[1];
-        System.out.println(start + " " + end + " " + (bst(words, start, end) - 1));
+        System.out.println(start + " " + end + " " + (bst(new HashSet<String>(words), start, end) - 1));
       }
       words.clear();
     }

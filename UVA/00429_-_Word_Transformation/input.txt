@@ -1,28 +1,19 @@
-2
+1
 
-dip
-lip
-mad
-map
-maple
-may
-pad
-pip
-pod
-pop
-sap
-sip
-slice
-slick
-spice
-stick
-stock
+axe
+axi
+bxi
+cxi
+dxi
+dli
+dlx
+dls
+cls
+clx
 *
-spice stock
-may pod
-
-test
-best
-bist
-*
-test bist
+axe axi
+axe clx
+axi cls
+axi dli
+dli cls
+cxi cls
