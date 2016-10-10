@@ -2,15 +2,17 @@ import java.util.*;
 import java.io.*;
 
 class Main {
-  public static void main(String[] args) throws Exception {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(System.out));
-    StringBuilder sb = new StringBuilder(25000);
+  public static PrintWriter out;
+  public static void main(String[] args) {
+    MyScanner sc = new MyScanner();
+    out = new PrintWriter(new BufferedOutputStream(System.out));
+
     String line;
     boolean first = true;
-    while (!(line = br.readLine()).equals("0 0")) {
+    while (!(line = sc.nextLine()).equals("0 0")) {
       if (first == false)
-        sb.append("-\n");
+        out.println("-");
+      first = false;
       StringTokenizer stk = new StringTokenizer(line);
       int S = Integer.parseInt(stk.nextToken());
       int B = Integer.parseInt(stk.nextToken());
@@ -21,7 +23,7 @@ class Main {
         right[i] = i + 1;
       }
       for (int i = 0; i < B; i++) {
-        stk = new StringTokenizer(br.readLine());
+        stk = new StringTokenizer(sc.nextLine());
         int L = Integer.parseInt(stk.nextToken());
         int R = Integer.parseInt(stk.nextToken());
         int newL = -1;
@@ -30,20 +32,70 @@ class Main {
           newL = left[L];
         if (right[R] <= S)
           newR = right[R];
-        sb.append((newL > 0 ? newL : "*") + " " + (newR > 0 ? newR : "*") + "\n");
+        out.println((newL > 0 ? newL : "*") + " " + (newR > 0 ? newR : "*"));
         if (right[R] <= S)
           left[right[R]] = left[L];
         if (left[L] <= S)
           right[left[L]] = right[R];
       }
-      first = false;
-      if (sb.length() >= 10000) {
-        wr.write(sb.toString());
-        sb = new StringBuilder(25000);
+    }
+    out.println("-");
+    out.close();
+  }
+
+  public static class MyScanner {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public MyScanner() {
+       br = new BufferedReader(new InputStreamReader(System.in));
+    }
+ 
+    public boolean hasNext() {
+      try {
+        boolean a = br.ready();
+        return a;
+      } catch (IOException e) {
+        return false;
       }
     }
-    wr.write(sb.toString());
-    wr.flush();
-    wr.close();
+
+    public String next() {
+      while (st == null || !st.hasMoreElements()) {
+        try {
+          st = new StringTokenizer(br.readLine());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      return st.nextToken();
+    }
+ 
+    public int nextInt() {
+      return Integer.parseInt(next());
+    }
+ 
+    public long nextLong() {
+      return Long.parseLong(next());
+    }
+
+    public double nextDouble() {
+      return Double.parseDouble(next());
+    }
+
+    public char nextChar() {
+      return next().charAt(0);
+    }
+
+    public String nextLine() {
+      String str = "";
+      try {
+         str = br.readLine();
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return str;
+    }
   }
+
 }
