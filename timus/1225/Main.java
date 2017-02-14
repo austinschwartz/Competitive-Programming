@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
   public static PrintWriter out;
 
-  static long[] dp = new long[46];
+  static long[] dp = new long[1001];
   static {
     Arrays.fill(dp, -1);
     dp[0] = 0;
@@ -13,7 +13,7 @@ public class Main {
   }
   public static long f(int N) {
     if (dp[N] != -1) return dp[N];
-    return dp[N] = f(N - 1) + f(N - 2);
+    return dp[N] = (f(N - 1) + f(N - 2)) % (long)(1e7);
   }
 
   /*
