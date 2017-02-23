@@ -12,7 +12,8 @@ public class Main {
   public static PrintWriter out;
   public static ArrayList<Edge>[] adjList;
   public static int n, q;
-  public static int[][] dp = new int[102][102];
+  public static int ma = 6;
+  public static int[][] dp = new int[ma][ma];
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -30,52 +31,38 @@ public class Main {
       adjList[i].add(new Edge(j, x));
       adjList[j].add(new Edge(i, x));
     }
-    for (int i = 0; i < 102; i++)
+    for (int i = 0; i < ma; i++)
       Arrays.fill(dp[i], -1);
 
-    dfs(1, 0);
+    out.println(dfs(1, q));
 
-    out.println(dp[1][q]);
     out.close();
   }
 
-  public static void dfs(int pos, int parent) {
-    int[][] dp_v = new int[n + 2][n + 2];
-    for (int i = 0; i < n + 2; i++)
-      Arrays.fill(dp_v[i], -1);
-
-    dp_v[0][0] = 0;
-
-    int child_num = 1;
-    List<Edge> edges = adjList[pos];
-    // https://inoi15.discuss.codechef.com/questions/60948/can-anyone-teach-me-dp-on-trees-with-the-help-of-solving-this-question
-    for (int i = 0; i < edges.size(); i++) {
-      Edge edge = edges.get(i);
-      int child = edge.j;
-      int weight = edge.x;
-
-      if (child != parent) {
-        dfs(child, pos);
-        for (int j = 0; j < n; j++) {
-          if (dp_v[child_num-1][j] != -1)
-            dp_v[child_num][j] = dp_v[child_num-1][j];
-          for (int k = 0; k < j; k++) {
-            if (dp_v[child_num-1][j-(k+1)] != -1)
-              dp_v[child_num][j] = Math.max(
-                    dp_v[child_num][j],
-                    dp_v[child_num - 1][j- (k + 1)] + weight + dp[child][k]
-               );
-          }
-        }
-        child_num++;
-      }
+  public static int dfs(int i, int q) {
+    if (i >= ma || i < 0 || q >= ma || q < 0) return Integer.MIN_VALUE;
+    if (dp[i][q] != -1) return dp[i][q];
+    if (q == 0) return dp[i][q] = 0;
+    
+    if (adjList[i].size() == 0) { // Just a leaf node
+      return Integer.MIN_VALUE;
     }
 
-    for (int i = 0; i < n; i++) {
-      dp[pos][i] = dp_v[child_num - 1][i];
+    Edge left = adjList[i].get(0);
+    int case1 = left.x + dfs(left.j, q - 1);
+    if (adjList[i].size() == 1) { // Has just a left/right child
+      return dp[i][q] = case1;
     }
 
-    return;
+    Edge right = adjList[i].get(1);
+    int case2 = right.x + dfs(right.j, q - 1);
+    // If we've gotten here, we have both children nodes, so we can check all 3 cases
+    int case3 = Math.max( 
+       left.x + dfs(left.j, q - 2),
+       right.x + dfs(right.j, q - 2));
+
+    return dp[i][q] = Math.max(case1, Math.max(case2, case3));
+
   }
 
 
