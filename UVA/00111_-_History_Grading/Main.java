@@ -6,10 +6,41 @@ public class Main {
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
+    int n = sc.nextInt();
+    int[] baseNums = new int[n + 1];
+    for (int i = 0; i < n; i++)
+      baseNums[i] = sc.nextInt();
 
+    while (true) {
+      String line = sc.nextLine();
+      if (line == null || line.equals(""))
+        break;
+      String[] ok = line.split(" ");
+      
+      int[] nums = new int[n + 1];
+      nums[n] = baseNums[0];
+      for (int i = 1; i < n; i++)
+        nums[Integer.parseInt(ok[i-1])] = baseNums[i];
+
+
+      int[] dp = new int[n + 1];
+      Arrays.fill(dp, 0);
+
+      int largest = 0;
+      for (int i = 1; i <= n; i++) {
+        int max = 0;
+        for (int j = i - 1; j >= 0; j--) {
+          if (nums[i] > nums[j])
+            if (dp[j] > max)
+              max = dp[j];
+        }
+        dp[i] = max + 1;
+        largest = Math.max(max, largest);
+      }
+      out.println(largest + 1);
+    }
     out.close();
   }
-
 
   public static class MyScanner {
     BufferedReader br;
