@@ -11,9 +11,8 @@ long long dp(long long a) {
     return 0;
   if (m[a] != 0)
     return m[a];
-  else {
+  else
     m[a] = max(a, dp(a / 2) + dp(a / 3) + dp(a / 4));
-  }
   return m[a];
 }
  
