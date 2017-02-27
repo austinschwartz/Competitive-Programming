@@ -6,38 +6,19 @@ public class Main {
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
-    int n;
-    boolean flag = false;
-    while ((n = sc.nextInt()) != 0) {
-      if (flag) 
-        out.println("");
-      flag = true;
-      String line;
-      while (((line = sc.nextLine()) != null) && !line.equals("0")) {
-        int[] arr = new int[n];
-        String[] split = line.split(" ");
-        for (int i = 0; i < n; i++)
-          arr[i] = Integer.parseInt(split[i]);
-
-        Stack<Integer> stack = new Stack<>();
-        int j = 0;
-        for (int i = 0; i < n; i++) {
-          int c = arr[i];
-          while (j < n && j != c) {
-            if (stack.size() > 0 && stack.peek() == c)
-              break;
-            j++;
-            stack.push(j);
-          }
-          if (stack.peek() == c)
-            stack.pop();
-
-        }
-
-        out.println(stack.size() == 0 ? "Yes" : "No");
+    char[] c = sc.nextLine().toCharArray();
+    int stack = 0;
+    boolean bad = false;
+    for (char h : c) {
+      if (h == '(') {
+        stack++;
+      } else if (h == ')') {
+        stack--;
+        if (stack < -2)
+          bad = true;
       }
     }
-    out.println();
+    out.println(bad ? "impossible" : "possible");
     out.close();
   }
 
