@@ -12,8 +12,9 @@ public class Main {
   public static PrintWriter out;
   public static ArrayList<Edge>[] adjList;
   public static int n, q;
-  public static int ma = 6;
-  public static int[][] dp = new int[ma][ma];
+  public static int MAX = 103;
+  public static int[][] dp = new int[MAX][MAX];
+
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
@@ -31,7 +32,7 @@ public class Main {
       adjList[i].add(new Edge(j, x));
       adjList[j].add(new Edge(i, x));
     }
-    for (int i = 0; i < ma; i++)
+    for (int i = 0; i < MAX; i++)
       Arrays.fill(dp[i], -1);
 
     out.println(dfs(1, q));
@@ -40,7 +41,7 @@ public class Main {
   }
 
   public static int dfs(int i, int q) {
-    if (i >= ma || i < 0 || q >= ma || q < 0) return Integer.MIN_VALUE;
+    if (i >= MAX || i < 0 || q >= MAX || q < 0) return Integer.MIN_VALUE;
     if (dp[i][q] != -1) return dp[i][q];
     if (q == 0) return dp[i][q] = 0;
     

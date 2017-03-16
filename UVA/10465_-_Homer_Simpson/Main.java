@@ -25,6 +25,7 @@ public class Main {
           if (i + n <= t) dp[i + n] = Math.max(dp[i + n], dp[i] + 1);
         }
       }
+
       if (dp[t] > 0)
         out.println(dp[t]);
       else {

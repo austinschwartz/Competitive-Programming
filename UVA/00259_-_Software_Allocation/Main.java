@@ -31,10 +31,10 @@ public class Main {
       if (!sc.hasNext())
         break;
 
-      adjList = (ArrayList<Edge>[])new ArrayList[MAX_V];
+      adjList = new ArrayList[MAX_V];
       for (int i = 0; i < MAX_V; i++)
         adjList[i] = new ArrayList<Edge>();
-
+      n = MAX_V;
       res = new int[MAX_V][MAX_V];
       for (int i = 0; i < MAX_V; i++)
         res[i] = new int[MAX_V];
@@ -43,7 +43,6 @@ public class Main {
       int app   = line[0].charAt(0) - 'A';
       int digit = line[0].charAt(1) - '0';
       char[] runon = line[1].toCharArray();
-      
       
       int mf = 0;
       while (true) {
