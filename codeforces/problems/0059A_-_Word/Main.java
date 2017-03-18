@@ -11,7 +11,7 @@ public class Main {
     for (char c : str.toCharArray())
       if (Character.isLowerCase(c))
         lower += 1;
-    if (lower >= str.length() / 2)
+    if (lower >= (str.length() - lower))
       out.println(str.toLowerCase());
     else
       out.println(str.toUpperCase());
