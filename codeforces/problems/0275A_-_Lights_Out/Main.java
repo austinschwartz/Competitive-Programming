@@ -13,8 +13,8 @@ public class Main {
         grid[i][j] += k;
         if (!oob(i - 1, j)) grid[i - 1][j] += k;
         if (!oob(i + 1, j)) grid[i + 1][j] += k;
-        if (!oob(i, j - 1)) grid[i][j - 1] ^= k;
-        if (!oob(i, j + 1)) grid[i][j + 1] ^= k;
+        if (!oob(i, j - 1)) grid[i][j - 1] += k;
+        if (!oob(i, j + 1)) grid[i][j + 1] += k;
       }
     }
     for (int i = 0; i < 3; i++) {
@@ -28,7 +28,7 @@ public class Main {
   }
 
   public static boolean oob(int i, int j) {
-    if (i > 0 && j > 0 && i < 3 && j < 3)
+    if (i >= 0 && j >= 0 && i < 3 && j < 3)
       return false;
     return true;
   }
