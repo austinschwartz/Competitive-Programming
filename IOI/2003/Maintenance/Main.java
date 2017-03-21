@@ -9,13 +9,11 @@ public class Main {
       this.pri = pri;
     }
   }
-  public static PrintWriter out;
   public static int N, W;
   public static ArrayList<Integer>[] adjList;
   public static int[][] adjMatrix;
   public static void main(String[] args) {
-    MyScanner sc = new MyScanner();
-    out = new PrintWriter(new BufferedOutputStream(System.out));
+    Scanner sc = new Scanner(System.in);
     N = sc.nextInt();
     W = sc.nextInt();
     adjMatrix = new int[N][N];
@@ -32,10 +30,8 @@ public class Main {
       adjMatrix[b][a] = Math.min(adjMatrix[b][a], x);
       adjList[a].add(b);
       adjList[b].add(a);
-      out.println(mstCost());
+      System.out.println(mstCost());
     }
-
-    out.close();
   }
 
   public static int mstCost() {
@@ -79,61 +75,5 @@ public class Main {
     }
 
     return cost == 0 ? -1 : cost;
-  }
-
-
-  public static class MyScanner {
-    BufferedReader br;
-    StringTokenizer st;
-
-    public MyScanner() {
-       br = new BufferedReader(new InputStreamReader(System.in));
-    }
- 
-    public boolean hasNext() {
-      try {
-        boolean a = br.ready();
-        return a;
-      } catch (IOException e) {
-        return false;
-      }
-    }
-
-    public String next() {
-      while (st == null || !st.hasMoreElements()) {
-        try {
-          st = new StringTokenizer(br.readLine());
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-      return st.nextToken();
-    }
- 
-    public int nextInt() {
-      return Integer.parseInt(next());
-    }
- 
-    public long nextLong() {
-      return Long.parseLong(next());
-    }
-
-    public double nextDouble() {
-      return Double.parseDouble(next());
-    }
-
-    public char nextChar() {
-      return next().charAt(0);
-    }
-
-    public String nextLine() {
-      String str = "";
-      try {
-         str = br.readLine();
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      return str;
-    }
   }
 }
