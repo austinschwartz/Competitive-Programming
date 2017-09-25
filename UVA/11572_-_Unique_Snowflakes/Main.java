@@ -9,23 +9,22 @@ public class Main {
     int t = sc.nextInt();
     for (int x = 0; x < t; x++) {
       int n = sc.nextInt();
-      Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+      Map<Long, Integer> map = new HashMap<>();
       int max = 0;
-      int current = 0;
-      int prev = 0;
-      for (int i = 0; i < n; i++) {
-        int s = sc.nextInt();
-        current++;
-        if (map.containsKey(s)) {
-          current = prev;
-          map.put(s, current);
-        } else {
-          map.put(s, current);
+      int count = 0;
+      int ans = 0;
+      for (int i = 1; i <= n; i++) {
+        long s = sc.nextLong();
+        int last_seen = map.getOrDefault(s, -1);
+        if (last_seen >= 0) {
+          max = Math.max(max, last_seen);
+          count = i - max - 1;
         }
-        max = Math.max(max, current - );
-        prev = current;
+        count += 1;
+        map.put(s, i);
+        ans = Math.max(ans, count);
       }
-      System.out.println(max);
+      System.out.println(ans);
     }
     out.close();
   }
