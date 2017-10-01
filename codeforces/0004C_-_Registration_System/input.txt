@@ -1,0 +1,6 @@
+5
+abacaba
+acaba
+abacaba
+acab
+abacaba
