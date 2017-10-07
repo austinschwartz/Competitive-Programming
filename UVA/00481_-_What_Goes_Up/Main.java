@@ -3,45 +3,46 @@ import java.util.*;
 
 public class Main {
   public static PrintWriter out;
+  public static int L = 0, L_end = 0;
+  public static long[] M, A;
+  public static int[] P, M_id;
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
-      
     List<Long> nums = new ArrayList<Long>();
     while (sc.hasNext())
       nums.add(sc.nextLong());
-
     int n = nums.size();
-    long[] dp = new long[n];
-    Arrays.fill(dp, 1);
-
-    for (int i = 1; i < n; i++)
-      for (int j = 0; j < i; j++)
-        if (nums.get(i) > nums.get(j) && dp[i] < dp[j] + 1)
-          dp[i] = dp[j] + 1;
-
-    long max = 0;
-    for (int i = 0; i < n; i++)
-      max = Math.max(max, dp[i]);
-
-    out.println(max);
+    M = new long[n];
+    A = new long[n];
+    P = new int[n];
+    M_id = new int[n];
+    Arrays.fill(A, 0);
+    for (int i = 0; i < n; i++) {
+      A[i] = nums.get(i);
+      int pos = Arrays.binarySearch(M, 0, L, A[i]);
+      if (pos < 0)
+        pos = -pos - 1;
+      M[pos] = A[i];
+      M_id[pos] = i;
+      P[i] = pos > 0 ? M_id[pos - 1] : -1;
+      if (pos == L) {
+        L++;
+        L_end = i;
+      }
+    }
+    out.println(L);
     out.println("-");
-    print(dp, nums, n - 1, max, out);
+    print(L_end);
 
     out.close();
   }
 
-  public static void print(long[] dp, List<Long> nums, int i, long max, PrintWriter out) {
-    if (max <= 0)
-      return;
-    if (dp[i] == max) {
-      print(dp, nums, i - 1, max - 1, out);
-      out.println(nums.get(i));
-    } else {
-      print(dp, nums, i - 1, max, out);
-    }
+  public static void print(int end) {
+    if (end < 0) return;
+    print(P[end]);
+    out.println(A[end]);
   }
-
 
   public static class MyScanner {
     BufferedReader br;
