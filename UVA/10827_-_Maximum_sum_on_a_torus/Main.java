@@ -6,25 +6,23 @@ public class Main {
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
-    int N = sc.nextInt();
-    for (int i = 0; i < N; i++) {
-      int x = sc.nextInt();
-      int[][] grid = new int[2 * x][2 * x];
-      for (int j = 0; j < x; j++) {
-        for (int k = 0; k < x; k++) {
+    int T = sc.nextInt();
+    for (int t = 1; t <= T; t++) {
+      int N = sc.nextInt();
+      int[][] grid = new int[2 * N][2 * N];
+      for (int j = 0; j < N; j++) {
+        for (int k = 0; k < N; k++) {
           int num = sc.nextInt();
           grid[j][k] = num;
-          grid[j + x][k] = num;
-          grid[j][k + x] = num;
-          grid[j + x][k + x] = num;
+          grid[j + N][k] = num;
+          grid[j][k + N] = num;
+          grid[j + N][k + N] = num;
         }
       }
-      out.println(maxSumBetter(grid, 2 * x));
+      out.println(maxSumBetter(grid, N*2));
     }
     out.close();
   }
-
-
 
   public static int maxSumBetter(int[][] matrix, int N) {
     int[][] sat = new int[N][N];
@@ -41,19 +39,17 @@ public class Main {
       }
     }
 
-    int max = -1;
+    int max = -1000000;
     for (int i = 0; i < N/2; i++) {
       for (int j = 0; j < N/2; j++) {
-        for (int k = 0; k < i + N/2; k++) {
-          for (int l = 0; l < j + N/2; l++) {
-            int sum = sat[i][j];
-            if (k > 0 && l > 0)
-              sum += sat[k-1][l-1];
-            if (k > 0)
-              sum -= sat[k-1][j];
-            if (l > 0)
-              sum -= sat[i][l-1];
-            max = Math.max(sum, max);
+        for (int k = i; k < i + N/2; k++) {
+          for (int l = j; l < j + N/2; l++) {
+            int cur = sat[k][l];
+            if(i > 0) cur -= sat[i - 1][l];
+            if(j > 0) cur -= sat[k][j - 1];
+            if(i > 0 && j > 0)
+                cur += sat[i - 1][j - 1];
+            max = Math.max(cur, max);
           }
         }
       }
