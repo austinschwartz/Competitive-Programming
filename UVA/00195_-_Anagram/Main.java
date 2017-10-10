@@ -21,7 +21,8 @@ class Main {
     int n = Integer.parseInt(br.readLine());
     for (int i = 0; i < n; i++) {
       String word = br.readLine();
-      List<String> words = permutations(word, word.length());
+      Set<String> wordSet = new HashSet<>(permutations(word, word.length()));
+      List<String> words = new ArrayList<>(wordSet);
       Collections.sort(words);
       for (String w : words)
         System.out.println(w);
