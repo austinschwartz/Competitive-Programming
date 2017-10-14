@@ -6,60 +6,50 @@ public class Main {
   public static boolean[] visited;
   public static Map<Integer, Integer> map;
   public static ArrayList<Integer>[] adjList;
+  public static int[] ans, adj;
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
     int T = sc.nextInt();
     for (int i = 0; i < T; i++) {
       int N = sc.nextInt();
-      map = new HashMap<Integer, Integer>();
-      adjList = (ArrayList<Integer>[])new ArrayList[N + 1];
-      for (int j = 1; j <= N; j++) {
-        adjList[j] = new ArrayList<Integer>();
-      }
-
+      ans = new int[N];
+      adj = new int[N];
+      Arrays.fill(ans, -1);
       for (int j = 0; j < N; j++) {
-        int u = sc.nextInt();
-        int v = sc.nextInt();
-        adjList[u].add(v);
+        int u = sc.nextInt() - 1;
+        int v = sc.nextInt() - 1;
+        adj[u] = v;
       }
 
-      visited = new boolean[N + 1];
-      for (int j = 1; j <= N; j++) {
-        dfs(j, j, 0);
+      visited = new boolean[N];
+      int max = 0;
+      int maxIndex = 0;
+      for (int j = 0; j < N; j++) {
+        if (ans[j] == -1)
+          dfs(j);
+        if (ans[j] > max) {
+          max = ans[j];
+          maxIndex = j + 1;
+        }
       }
 
-      int max = Integer.MIN_VALUE;
-      for (int key : map.keySet()) {
-        int value = map.get(key);
-        max = Math.max(value, max);
-      }
-      int maxKey = Integer.MAX_VALUE;
-      for (int key : map.keySet()) {
-        if (map.get(key) == max && key < maxKey)
-          maxKey = key;
-      }
-      System.out.println(String.format("Case %d: %d", i + 1, maxKey));
+      System.out.println(String.format("Case %d: %d", i + 1, maxIndex));
     }
     out.close();
   }
 
-  public static void dfs(int num, int original, int count) {
-    if (visited[num]) return;
-    visited[num] = true;
+  public static int dfs(int u) {
+    visited[u] = true;
 
-    for (int adj : adjList[num]) {
-      if (!visited[adj]) {
-        dfs(adj, original, count + 1);   
-      }
-    }
-    if (map.containsKey(original)) {
-      if (count + 1 > map.get(original)) {
-        map.put(original, count + 1);
-      }
-    } else {
-      map.put(original, count + 1);
-    }
+    int v = adj[u];
+    int ret = 0;
+    if (!visited[v])
+      ret += (1 + dfs(v));
+    visited[u] = false;
+
+    ans[u] = ret;
+    return ret;
   }
 
 
