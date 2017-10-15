@@ -27,11 +27,11 @@ public class Main {
   public static void search(int m) {
     if (m == n - 1 && isPrime(circle[n - 1] + 1)) {
       for (int i = 0; i < n; i++) {
-        System.out.print(circle[i]);
+        out.print(circle[i]);
         if (i < n - 1)
-          System.out.print(" ");
+          out.print(" ");
       }
-      System.out.println();
+      out.println();
     }
     for (int i = 2; i <= n; i++) {
       if (!used[i] && isPrime(circle[m] + i)) {
@@ -50,9 +50,9 @@ public class Main {
     while (sc.hasNext()) {
       n = sc.nextInt();
       if (i > 1)
-        System.out.println();
+        out.println();
       circle[0] = circle[n] = 1;
-      System.out.println("Case " + i + ":");
+      out.println("Case " + i + ":");
       search(0);
       i++;
     }
