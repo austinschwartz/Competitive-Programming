@@ -4,63 +4,42 @@ import java.util.*;
 public class Main {
   public static PrintWriter out;
   public static int M, N;
-  public static boolean[][] grid;
-  public static int[][] dp;
+  public static int[][] grid, dp;
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
-    while ((M = sc.nextInt()) >= 0 &&
-           (N = sc.nextInt()) >= 0 &&
-           !(M == 0 && N == 0)) {
-      grid = new boolean[M][N];
-      for (int i = 0; i < M; i++) {
-        for (int j = 0; j < N; j++) {
-          char c = sc.nextChar();
-          grid[i][j]= (c == '1' ? true : false);
+    while (true) {
+      int N = sc.nextInt();
+      int M = sc.nextInt();
+      if (N == 0 && M == 0)
+        break;
+
+      grid = new int[N][M];
+      for (int i = 0; i < N; i++)
+        for (int j = 0; j < M; j++)
+          grid[i][j] = (sc.nextChar() == '1' ? 0 : 1);
+
+      for (int i = 1; i < N; i++)
+        for (int j = 0; j < M; j++)
+          if (grid[i][j] == 1)
+            grid[i][j] = grid[i - 1][j] + 1;
+
+      int max = 0;
+      for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+          int cur = grid[i][j];
+          for (int k = j + 1; k < M && grid[i][j] <= grid[i][k]; k++)
+            cur += grid[i][j];
+          for (int k = j - 1; k >= 0 && grid[i][j] <= grid[i][k]; k--)
+            cur += grid[i][j];
+          max = Math.max(max, cur);
         }
       }
-      for (int i = 0; i < M; i++) {
-        for (int j = 0; j < N; j++)
-          out.print(grid[i][j] ? '1' : '0');
-        out.println();
-      }
 
-      dp = new int[M][N];
-      for (int i = 0; i < M; i++)
-        Arrays.fill(dp[i], -1);
-
-      for (int i = 0; i < M; i++)
-        for (int j = 0; j < N; j++)
-          dp[i][j] = f(i, j);
-
-      for (int i = 0; i < M; i++) {
-        for (int j = 0; j < N; j++)
-          out.print(dp[i][j] + "  " );
-        out.println();
-      }
+      out.println(max);
     }
     out.close();
   }
-
-  public static int f(int i, int j) {
-    if (dp[i][j] != -1)
-      return dp[i][j];
-
-    if (grid[i][j])
-      return 0;
-    if (i == 0 && j == 0)
-      return (grid[i][j] ? 0 : 1);
-    if (i == 0)
-      return 1 + f(i, j-1);
-    if (j == 0)
-      return 1 + f(i-1, j);
-    if (grid[i-1][j])
-      return f(i, j-1) - f(i-1, j-1);
-
-
-    return 1;
-  }
-
 
   public static class MyScanner {
     BufferedReader br;
