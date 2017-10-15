@@ -6,38 +6,35 @@ public class Main {
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
-    int n = sc.nextInt();
-    int[] baseNums = new int[n + 1];
-    for (int i = 0; i < n; i++)
-      baseNums[i] = sc.nextInt();
-
+    int n = 0;
+    int[] orig = new int[0];
+    int[] nums = new int[0];
     while (true) {
       String line = sc.nextLine();
-      if (line == null || line.equals(""))
-        break;
-      String[] ok = line.split(" ");
-      
-      int[] nums = new int[n + 1];
-      nums[n] = baseNums[0];
-      for (int i = 1; i < n; i++)
-        nums[Integer.parseInt(ok[i-1])] = baseNums[i];
-
-
-      int[] dp = new int[n + 1];
-      Arrays.fill(dp, 0);
-
-      int largest = 0;
-      for (int i = 1; i <= n; i++) {
-        int max = 0;
-        for (int j = i - 1; j >= 0; j--) {
-          if (nums[i] > nums[j])
-            if (dp[j] > max)
-              max = dp[j];
+      if (line != null && !line.contains(" ")) {
+        n = Integer.parseInt(line);
+        orig = new int[n];
+        String[] ok = sc.nextLine().split(" ");
+        for (int i = 0; i < ok.length; i++)
+          orig[Integer.parseInt(ok[i]) - 1] = i;
+      } else {
+        if (line == null || line.equals(""))
+          break;
+        String[] ok = line.split(" ");
+        nums = new int[n];
+        for (int i = 0; i < ok.length; i++)
+          nums[Integer.parseInt(ok[i]) - 1] = i;
+        int[][] dp = new int[n + 1][n + 1];
+        for (int i = 1; i <= n; i++) {
+          for (int j = 1; j <= n; j++) {
+            if (nums[i - 1] == orig[j - 1])
+              dp[i][j] = dp[i - 1][j - 1] + 1;
+            else
+              dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+          }
         }
-        dp[i] = max + 1;
-        largest = Math.max(max, largest);
+        out.println(dp[n][n]);
       }
-      out.println(largest + 1);
     }
     out.close();
   }
