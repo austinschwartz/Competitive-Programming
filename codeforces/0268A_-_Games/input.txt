@@ -1,0 +1,4 @@
+zsh:1: command not found: :w
+1 2
+2 4
+3 4
