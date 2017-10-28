@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#define ll long long
+typedef long long int ll;
 
 int main() {
   ios_base::sync_with_stdio(0);
