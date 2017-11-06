@@ -17,7 +17,7 @@ for x in range(0, n*n):
         cur.append(i)
         cur.append(j)
         if len(cur) == n:
-            res.append(cur)
+            res.append(sorted(cur))
             cur = []
 
 for thing in res:

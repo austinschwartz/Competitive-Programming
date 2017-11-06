@@ -4,67 +4,63 @@ import java.util.*;
 public class Main {
   public static int INF = (int)1e8;
   public static PrintWriter out;
-  public static class Pair {
-    public int u, v;
-    public Pair(int u, int v) { this.u = u; this.v = v; }
-  }
   public static void main(String[] args) {
     MyScanner sc = new MyScanner();
     out = new PrintWriter(new BufferedOutputStream(System.out));
     int T = sc.nextInt();
-    ArrayList<Pair>[] adjList;
+    ArrayList<int[]>[] adjList;
     for (int l = 1; l <= T; l++) {
       sc.nextLine();
       int n = sc.nextInt();
       int m = sc.nextInt();
-      adjList = (ArrayList<Pair>[])new ArrayList[n];
+      adjList = (ArrayList<int[]>[])new ArrayList[n];
       for (int i = 0; i < n; i++)
-        adjList[i] = new ArrayList<Pair>();
+        adjList[i] = new ArrayList<int[]>();
       for (int i = 0; i < m; i++) {
         int u = sc.nextInt();
         int v = sc.nextInt();
         int w = sc.nextInt();
-        adjList[u].add(new Pair(v, w));
-        adjList[v].add(new Pair(u, w));
+        adjList[u].add(new int[]{v, w});
+        adjList[v].add(new int[]{u, w});
       }
 
       int t = sc.nextInt();
 
-      ArrayList<Integer> dist = new ArrayList<>();
+      int[] dist = new int[n];
       for (int i = 0; i < n; i++)
-        dist.add(INF);
-      dist.set(t, 0);
+        dist[i] = INF;
+      dist[t] = 0;
 
-      PriorityQueue<Pair> pq = new PriorityQueue<Pair>(1, 
-        new Comparator<Pair>() {
-          public int compare(Pair i, Pair j) {
-            return i.u - j.u;
+      PriorityQueue<int[]> pq = new PriorityQueue<>(1, 
+        new Comparator<int[]>() {
+          public int compare(int[] i, int[] j) {
+            return i[0] - j[0];
           }
         }
       );
 
-      pq.offer(new Pair(0, t));
+      pq.offer(new int[]{0, t});
 
       while (!pq.isEmpty()) {
-        Pair top = pq.poll();
-        int d = top.u;
-        int u = top.v;
-        if (d > dist.get(u)) continue;
+        int[] top = pq.poll();
+        int d = top[0];
+        int u = top[1];
+        if (d > dist[u]) continue;
         Iterator it = adjList[u].iterator();
         while (it.hasNext()) {
-          Pair p = (Pair) it.next();
-          int v = p.u;
-          int weight_u_v = Math.max(p.v, d);
-          if (weight_u_v < dist.get(v)) {
-            dist.set(v, weight_u_v);
-            pq.offer(new Pair(dist.get(v), v)); 
+          int[] p = (int[]) it.next();
+          int v = p[0];
+          int weight_u_v = Math.max(p[1], d);
+          if (weight_u_v < dist[v]) {
+            dist[v] =  weight_u_v;
+            pq.offer(new int[]{dist[v], v}); 
           }
         } 
       }
 
       out.println(String.format("Case %d:", l));
       for (int i = 0; i < n; i++)
-        out.println(dist.get(i) == INF ? "Impossible" : dist.get(i));
+        out.println(dist[i] == INF ? "Impossible" : dist[i]);
     }
     out.close();
   }
