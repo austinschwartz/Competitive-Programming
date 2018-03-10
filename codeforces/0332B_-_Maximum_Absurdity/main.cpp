@@ -5,7 +5,7 @@ using namespace std;
 #define ll long long
 #define MAX 20005
 
-int x[MAX];
+ll x[MAX];
 ll p[MAX];
 ll pk[MAX];
 
@@ -49,6 +49,6 @@ int main() {
       b = i;
     }
   }
-  printf("%d %d\n", a, b);
+  printf("%d %d\n", a + 1, b + 1);
   
 }
